@@ -1,0 +1,40 @@
+.mode "csv"
+.separator ","
+
+.import '| tail -n +2 data/Cost.csv'  Cost
+.import '| tail -n +2 data/Degree.csv' Degree
+.import '| tail -n +2 data/Major.csv' Major
+.import '| tail -n +2 data/Population.csv' Population   
+.import '| tail -n +2 data/Ranking.csv' Ranking  
+.import '| tail -n +2 data/Score.csv' Score
+.import '| tail -n +2 data/University.csv' University
+.import '| tail -n +2 data/DegreeOf.csv' DegreeOf
+.import '| tail -n +2 data/MajorOffer.csv' MajorOffer
+
+ 
+
+-- ======== DELETE ALL THE CONTENTS AND STRUCTURE OF THE TABLE====
+/*
+Drop table Cost
+Drop table Degree
+Drop table Major
+Drop table Population
+Drop table Ranking
+Drop table Score
+Drop table University
+Drop table DegreeOf
+Drop table MajorOffer
+*/
+
+-- ======DELETE THE CONTENTS OF EACH TABLE=====
+/*
+Delete table Cost
+Delete table Degree
+Delete table Major
+Delete table Population
+Delete table Ranking
+Delete table Score
+Delete table University
+Delete table DegreeOf
+Delete table MajorOffer
+*/
