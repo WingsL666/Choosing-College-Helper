@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html> 
+<html style="background-color: lightgray;">
+
+<head>
+    <meta charset="utf-8">
+    <title>CHelper Database</title>
+    <style>
+      h1 {
+          text-align: left;
+          font-family: Cambria;
+          color: black;
+      }
+      .button {
+         background-color: #4CAF50; /* Green */
+         border: none;
+         color: white;
+         padding: 8px 10px;
+         text-align: center;
+         text-decoration: none;
+         display: inline-block;
+         font-size: 10px;
+         margin: 10px 15px;
+         cursor: pointer;
+      }
+      
+    </style>
+
+<h1>C-Helper College</h1>
+
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+   <script>
+
+
+      function populateUniversities() {
+         var selUniversityName = document.getElementById('UniversityName');
+         var selState = document.getElementById('states');
+         var selType = document.getElementById('type');
+         var selState2 = document.getElementById('states2');//
+         var selGeneral = document.getElementById('general');
+
+         //selProd.value = "All";
+
+         const API_URL = 'http://127.0.0.1:8092/UniversityName';
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  option = document.createElement('option');
+                  option.value = response.data.data[x].u_university_name;  //this has to be the name of the attricute from the table
+                  option.text = response.data.data[x].u_university_name;
+                  selUniversityName.appendChild(option);
+               }
+            })
+            .catch(error =>
+               console.error('populateUniversities', error)
+            )
+
+         const API_URL2 = 'http://127.0.0.1:8092/api/state';
+         axios.get(`${API_URL2}`)
+            .then(response => {
+               //console.log(response.data.data);
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  option = document.createElement('option');
+                  option.value = response.data.data[x].u_state;  //this has to be the name of the attricute from the table
+                  option.text = response.data.data[x].u_state;
+                  selState.appendChild(option);
+               }
+            })
+            .catch(error =>
+               console.error('populateUniversities', error)
+            )
+         axios.get(`${API_URL2}`)
+            .then(response => {
+               //console.log(response.data.data);
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  option = document.createElement('option');
+                  option.value = response.data.data[x].u_state;  //this has to be the name of the attricute from the table
+                  option.text = response.data.data[x].u_state;
+                  selState2.appendChild(option);
+               }
+            })
+            .catch(error =>
+               console.error('populateUniversities', error)
+            )
+         
+         const API_URL3 = 'http://127.0.0.1:8092/api/schoolType'; //
+         axios.get(`${API_URL3}`) //
+            .then(response => {
+               for (x=0; x<response.data.data.length; x++) {
+                  option = document.createElement('option');
+                  option.value = response.data.data[x].u_school_type;  //this has to be the name of the attricute from the table
+                  option.text = response.data.data[x].u_school_type; //
+                  selType.appendChild(option);
+               }
+            })
+            .catch(error =>
+               console.error('populateUniversities', error)
+            )   
+            const API_URL4 = 'http://127.0.0.1:8092/api/generalMajor'; //
+         axios.get(`${API_URL4}`) //
+            .then(response => {
+               for (x=0; x<response.data.data.length; x++) {
+                  option = document.createElement('option');
+                  option.value = response.data.data[x].m_general;  //this has to be the name of the attricute from the table
+                  option.text = response.data.data[x].m_general; //
+                  selGeneral.appendChild(option);//
+               }
+            })
+            .catch(error =>
+               console.error('populateUniversities', error)
+            )  
+      }
+
+      function ListMajor() {
+         var UniversityName = document.getElementById('UniversityName').value; //this gets inside the result
+
+         var result = document.getElementById('result');
+         result.innerHTML = "";
+
+         const API_URL = `http://127.0.0.1:8092/MajorandLevel/${UniversityName}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+
+               if (response.data.data.length == 0) {
+                  return;
+               }
+
+               let thead = result.createTHead();
+               let row = thead.insertRow();
+               for (key in response.data.data[0]) {
+                  //console.log(key);
+
+                  let th = document.createElement("th");
+                  let text = document.createTextNode(key);
+                  th.appendChild(text);
+                  row.appendChild(th);
+               }
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  let row = result.insertRow();
+                  for (k in response.data.data[x]) {
+                     console.log(k);   //displays the result(table)
+
+                     let cell = row.insertCell();
+                     let text = document.createTextNode(response.data.data[x][k]);
+                     cell.appendChild(text);
+
+                  }
+                  
+               }
+            })
+            .catch(error =>
+               console.error('ListMajor', error)
+            )
+
+         }
+
+
+         function ShowPop() {
+         var UniversityName = document.getElementById('UniversityName').value; //this gets inside the result
+
+         var result = document.getElementById('result');
+         result.innerHTML = "";
+
+         const API_URL = `http://127.0.0.1:8092/Pop/${UniversityName}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+
+               if (response.data.data.length == 0) {
+                  return;
+               }
+
+               let thead = result.createTHead();
+               let row = thead.insertRow();
+               for (key in response.data.data[0]) {
+                  //console.log(key);
+
+                  let th = document.createElement("th");
+                  let text = document.createTextNode(key);
+                  th.appendChild(text);
+                  row.appendChild(th);
+               }
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  let row = result.insertRow();
+                  for (k in response.data.data[x]) {
+                     console.log(k);   //displays the result(table)
+
+                     let cell = row.insertCell();
+                     let text = document.createTextNode(response.data.data[x][k]);
+                     cell.appendChild(text);
+
+                  }
+                  
+               }
+            })
+            .catch(error =>
+               console.error('ShowPop', error)
+            )
+
+         }
+
+         function EstimateCost() {
+         var UniversityName = document.getElementById('UniversityName').value; //this gets inside the result
+
+         var result = document.getElementById('result');
+         result.innerHTML = "";
+
+         const API_URL = `http://127.0.0.1:8092/Cost/${UniversityName}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+
+               if (response.data.data.length == 0) {
+                  return;
+               }
+
+               let thead = result.createTHead();
+               let row = thead.insertRow();
+               for (key in response.data.data[0]) {
+                  //console.log(key);
+
+                  let th = document.createElement("th");
+                  let text = document.createTextNode(key);
+                  th.appendChild(text);
+                  row.appendChild(th);
+               }
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  let row = result.insertRow();
+                  for (k in response.data.data[x]) {
+                     console.log(k);   //displays the result(table)
+
+                     let cell = row.insertCell();
+                     let text = document.createTextNode(response.data.data[x][k]);
+                     cell.appendChild(text);
+                  }
+                  
+               }
+            })
+            .catch(error =>
+               console.error('EstimateCost', error)
+            )
+         }
+
+         function ViewRanking() {
+         var UniversityName = document.getElementById('UniversityName').value; //this gets inside the result
+
+         var result = document.getElementById('result');
+         result.innerHTML = "";
+
+         const API_URL = `http://127.0.0.1:8092/Ranking/${UniversityName}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+
+               if (response.data.data.length == 0) {
+                  return;
+               }
+
+               let thead = result.createTHead();
+               let row = thead.insertRow();
+               for (key in response.data.data[0]) {
+                  //console.log(key);
+
+                  let th = document.createElement("th");
+                  let text = document.createTextNode(key);
+                  th.appendChild(text);
+                  row.appendChild(th);
+               }
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  let row = result.insertRow();
+                  for (k in response.data.data[x]) {
+                     console.log(k);   //displays the result(table)
+
+                     let cell = row.insertCell();
+                     let text = document.createTextNode(response.data.data[x][k]);
+                     cell.appendChild(text);
+
+                  }
+                  
+               }
+            })
+            .catch(error =>
+               console.error('ViewRanking', error)
+            )
+         }
+
+         function ShowScore() {
+         var UniversityName = document.getElementById('UniversityName').value; //this gets inside the result
+
+         var result = document.getElementById('result');
+         result.innerHTML = "";
+
+         const API_URL = `http://127.0.0.1:8092/Score/${UniversityName}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+
+               if (response.data.data.length == 0) {
+                  return;
+               }
+
+               let thead = result.createTHead();
+               let row = thead.insertRow();
+               for (key in response.data.data[0]) {
+                  //console.log(key);
+
+                  let th = document.createElement("th");
+                  let text = document.createTextNode(key);
+                  th.appendChild(text);
+                  row.appendChild(th);
+               }
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  let row = result.insertRow();
+                  for (k in response.data.data[x]) {
+                     console.log(k);   //displays the result(table)
+
+                     let cell = row.insertCell();
+                     let text = document.createTextNode(response.data.data[x][k]);
+                     cell.appendChild(text);
+
+                  }
+                  
+               }
+            })
+            .catch(error =>
+               console.error('ViewRanking', error)
+            )
+         }
+
+         function DisplayRace() {
+         var UniversityName = document.getElementById('UniversityName').value; //this gets inside the result
+
+         var result = document.getElementById('result');
+         result.innerHTML = "";
+
+         const API_URL = `http://127.0.0.1:8092/Race/${UniversityName}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+
+               if (response.data.data.length == 0) {
+                  return;
+               }
+
+               let thead = result.createTHead();
+               let row = thead.insertRow();
+               for (key in response.data.data[0]) {
+                  //console.log(key);
+
+                  let th = document.createElement("th");
+                  let text = document.createTextNode(key);
+                  th.appendChild(text);
+                  row.appendChild(th);
+               }
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  let row = result.insertRow();
+                  for (k in response.data.data[x]) {
+                     console.log(k);   //displays the result(table)
+
+                     let cell = row.insertCell();
+                     let text = document.createTextNode(response.data.data[x][k]);
+                     cell.appendChild(text);
+
+                  }
+                  
+               }
+            })
+            .catch(error =>
+               console.error('DisplayRace', error)
+            )
+         }
+
+         function ViewIncome() {
+         var UniversityName = document.getElementById('UniversityName').value; //this gets inside the result
+
+         var result = document.getElementById('result');
+         result.innerHTML = "";
+
+         const API_URL = `http://127.0.0.1:8092/Income/${UniversityName}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+
+               if (response.data.data.length == 0) {
+                  return;
+               }
+
+               let thead = result.createTHead();
+               let row = thead.insertRow();
+               for (key in response.data.data[0]) {
+                  //console.log(key);
+
+                  let th = document.createElement("th");
+                  let text = document.createTextNode(key);
+                  th.appendChild(text);
+                  row.appendChild(th);
+               }
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  let row = result.insertRow();
+                  for (k in response.data.data[x]) {
+                     console.log(k);   //displays the result(table)
+
+                     let cell = row.insertCell();
+                     let text = document.createTextNode(response.data.data[x][k]);
+                     cell.appendChild(text);
+
+                  }
+                  
+               }
+            })
+            .catch(error =>
+               console.error('ViewIncome', error)
+            )
+         }
+
+
+         //==wings
+
+         function ViewCostBaseOnLoc() {
+         var states = document.getElementById('states').value; //this gets inside the result
+         var type = document.getElementById('type').value;
+
+         var result = document.getElementById('resultViewCostBaseOnLoc');
+
+         result.innerHTML = "";
+
+         const API_URL = `http://127.0.0.1:8092/api/CostBaseOnLocationType/${states}-${type}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+
+               if (response.data.data.length == 0) {
+                  return;
+               }
+
+               let thead = result.createTHead();
+               let row = thead.insertRow();
+               for (key in response.data.data[0]) {
+                  //console.log(key);
+
+                  let th = document.createElement("th");
+                  let text = document.createTextNode(key);
+                  th.appendChild(text);
+                  row.appendChild(th);
+               }
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  let row = result.insertRow();
+                  for (k in response.data.data[x]) {
+                     console.log(k);   //displays the result(table)
+
+                     let cell = row.insertCell();
+                     let text = document.createTextNode(response.data.data[x][k]);
+                     cell.appendChild(text);
+
+                  }
+                  
+               }
+            })
+            .catch(error =>
+               console.error('ViewCostBaseOnLoc', error)
+            )
+         }
+
+         function ViewCostEarning() {
+         var states = document.getElementById('states2').value; //this gets inside the result
+         var tuition = document.getElementById('tuitionCost').value;
+         var earning = document.getElementById('startEarning').value;
+         
+         var result = document.getElementById('resultViewCostEarning');
+
+         result.innerHTML = "";
+
+         const API_URL = `http://127.0.0.1:8092/api/CostEarning/${states}-${tuition}-${earning}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+
+               if (response.data.data.length == 0) {
+                  return;
+               }
+
+               let thead = result.createTHead();
+               let row = thead.insertRow();
+               for (key in response.data.data[0]) {
+                  //console.log(key);
+
+                  let th = document.createElement("th");
+                  let text = document.createTextNode(key);
+                  th.appendChild(text);
+                  row.appendChild(th);
+               }
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  let row = result.insertRow();
+                  for (k in response.data.data[x]) {
+                     console.log(k);   //displays the result(table)
+
+                     let cell = row.insertCell();
+                     let text = document.createTextNode(response.data.data[x][k]);
+                     cell.appendChild(text);
+
+                  }
+                  
+               }
+            })
+            .catch(error =>
+               console.error('ViewCostBaseOnLoc', error)
+            )
+         }
+
+         function populateGeneralU(){ //populate university that has general major the user select
+         var general = document.getElementById('general').value;
+         var selGeneralU = document.getElementById('generalU');
+
+         const API_URL = `http://127.0.0.1:8092/api/University/spcificMajor/${general}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  option = document.createElement('option');
+                  option.value = response.data.data[x].university;  //this has to be the name of the attricute from the table
+                  option.text = response.data.data[x].university;
+                  selGeneralU.appendChild(option);
+               }
+            })
+            .catch(error =>
+               console.error('populateUniversities', error)
+            )
+      }
+      
+      function displayGeneralU(){ //display university that has general major the user select
+         var general = document.getElementById('general').value; // match var name with namne in URL below
+
+         var result = document.getElementById('resultGeneralU');
+         result.innerHTML = "";
+
+         const API_URL = `http://127.0.0.1:8092/api/University/${general}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+
+               if (response.data.data.length == 0) {
+                  return;
+               }
+
+               let thead = result.createTHead();
+               let row = thead.insertRow();
+               for (key in response.data.data[0]) {
+                  //console.log(key);
+
+                  let th = document.createElement("th");
+                  let text = document.createTextNode(key);
+                  th.appendChild(text);
+                  row.appendChild(th);
+               }
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  let row = result.insertRow();
+                  for (k in response.data.data[x]) {
+                     console.log(k);   //displays the result(table)
+
+                     let cell = row.insertCell();
+                     let text = document.createTextNode(response.data.data[x][k]);
+                     cell.appendChild(text);
+
+                  }
+                  
+               }
+            })
+            .catch(error =>
+               console.error('GeneralU', error)
+            )
+      }    
+      function displayMajor(){
+         var general = document.getElementById('general').value; //this gets inside the result
+         var university = document.getElementById('generalU').value;
+         
+         var result = document.getElementById('resultGeneralU');
+
+         result.innerHTML = "";
+
+         const API_URL = `http://127.0.0.1:8092/api/spcificMajor/${general}-${university}`;
+         axios.get(`${API_URL}`)
+            .then(response => {
+               //console.log(response.data.data);
+
+               if (response.data.data.length == 0) {
+                  return;
+               }
+
+               let thead = result.createTHead();
+               let row = thead.insertRow();
+               for (key in response.data.data[0]) {
+                  //console.log(key);
+
+                  let th = document.createElement("th");
+                  let text = document.createTextNode(key);
+                  th.appendChild(text);
+                  row.appendChild(th);
+               }
+               
+               for (x=0; x<response.data.data.length; x++) {
+                  //console.log(response.data.data[x].maker);
+
+                  let row = result.insertRow();
+                  for (k in response.data.data[x]) {
+                     console.log(k);   //displays the result(table)
+
+                     let cell = row.insertCell();
+                     let text = document.createTextNode(response.data.data[x][k]);
+                     cell.appendChild(text);
+
+                  }
+                  
+               }
+            })
+            .catch(error =>
+               console.error('displayMajor', error)
+            )
+         }
+         
+</script>
+</head>
+   
+<body onload="populateUniversities()">
+   <label>Select University:</label>
+   <select name="Universityname" id="UniversityName">
+      <option value=''>------- Select --------</option>
+   </select>
+
+   <br>
+   <button class="button button1" onclick="ListMajor()">List Majors</button>
+   <button class="button button2" onclick="EstimateCost()">Estimate cost</button>
+   <button class="button button3" onclick="ShowPop()">Show Population</button>
+   <button class="button button4" onclick="ViewRanking()">View Ranking</button>
+   <br>
+   <button class="button button5" onclick="ShowScore()">Show University's Score</button>
+   <button class="button button6" onclick="DisplayRace()">Display Racial Diversity</button>
+   <button class="button button6" onclick="ViewIncome()">View Expected Income</button>
+
+   <br>
+
+   <table name="result" id="result"></table>
+
+   <br><br>
+
+   <h1>Quick Search</h1>
+   <p1><b>Show tuition+room cost starting from lowest to highest total depending on your state of residency</b></p1>
+   <br>
+      <label>Select state you live(whether out of state or in state):</label>
+      <select name="states" id="states">
+         <option value=''>------- Select --------</option>
+      </select>
+
+      <label>Select school type you want:</label>
+      <select name="type" id="type">
+         <option value=''>------- Select --------</option>
+      </select>
+
+      <button class="button button6" onclick="ViewCostBaseOnLoc()">View Cost</button>
+
+      <table name="resultViewCostBaseOnLoc" id="resultViewCostBaseOnLoc"></table>
+
+      <p2><b>Cost and Benefit from Going to University</b></p2>
+      <br>
+      <p3>Suggest university that offer 
+         majors that earn more than $____ as a start-career 
+         and tuition(in state or outstate) cost less than $____ per year
+         with a degree length at most 4 year</p3>
+      <br>
+      
+      <label>Select states of university:</label>
+      <select name="states" id="states2">
+         <option value='All'>All</option>
+      </select>
+
+      <label>select tuition which is less than $</label>
+      <select name="tuitionCost" id="tuitionCost">
+         <option value=10000>10000</option>
+         <option value=20000>20000</option>
+         <option value=30000>30000</option>
+         <option value=40000>40000</option>
+         <option value=50000>50000</option>
+         <option value=60000>60000</option>
+         <option value=70000>70000</option>
+         <option value=80000>80000</option>
+      </select>
+
+      <label>select start-career earing expected more than $</label>
+      <select name="startEarning" id="startEarning">
+         <option value=10000>10000</option>
+         <option value=20000>20000</option>
+         <option value=30000>30000</option>
+         <option value=40000>40000</option>
+      </select>
+      
+      <button class="button button7" onclick="ViewCostEarning()">Search University</button>
+      <table name="resultViewCostEarning" id="resultViewCostEarning"></table>
+
+      <p4><b>Choose college by Academic First</b></p4>
+      <br>
+      <p5>User can choose a general major they are looking for and get
+         university that offer those genreal major, 
+         print university name, world ranking, nation ranking,
+         order by avg score in drecresing order, (citation or research or teaching)
+         After that, user can choose a university from the output result 
+         university and check out more specific major and degree that 
+         is belong to the general major user choose before</p5>
+      <br>
+      <label>Select general major field you interested in:</label>
+      <select name="general" id="general">
+         <option value=''>------- Select --------</option>
+      </select>
+
+      <button class="button button8" onclick="displayGeneralU()">Search University that offer the selected major field</button>
+      <br>
+      <button class="button button9" onclick="populateGeneralU()">Find out more specific major in those university</button>
+      <br>
+      <label>Select University:</label>
+      <select name="generalU" id="generalU">
+         <option value=''>------- Select --------</option>
+      </select>
+      <br>
+      <button class="button button10" onclick="displayMajor()">Search specific major offer</button>
+
+      <table name="resultGeneralU" id="resultGeneralU"></table>
+
+      <br>
+      <br>
+</body>
+
+</html>
