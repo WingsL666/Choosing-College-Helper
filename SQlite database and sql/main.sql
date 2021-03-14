@@ -1,5 +1,5 @@
 Create table Cost(  
-    c_university_name cha(50) primary key,
+    c_university_name char(50) primary key,
     c_room_cost integer,
     c_in_state_tuition integer,
     c_in_state_total integer,
